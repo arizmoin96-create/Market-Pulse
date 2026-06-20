@@ -1,0 +1,5 @@
+flask
+requests
+gunicorn
+# Optional: only needed for the AI morning briefing (set ANTHROPIC_API_KEY to use it).
+anthropic
