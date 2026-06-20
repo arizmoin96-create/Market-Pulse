@@ -36,7 +36,7 @@ built from the NSE live option chain + breadth:
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-python app.py        # http://127.0.0.1:5060
+python app.py        # http://127.0.0.1:5070
 ```
 
 Optional AI briefing:

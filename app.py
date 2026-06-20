@@ -12,7 +12,7 @@ Engines live in global_markets.py and intraday.py.
 Run:
     pip install -r requirements.txt
     python app.py
-Then open http://127.0.0.1:5060
+Then open http://127.0.0.1:5070
 
 NSE blocks datacenter IPs, so the Scalper's Cockpit (and parts of the morning
 call) work on a local network only. Educational, not investment advice.
@@ -85,6 +85,7 @@ def index():
 
 
 if __name__ == "__main__":
-    # Port 5060 (corporate-pulse uses 5050) so both can run side by side.
-    port = int(os.environ.get("PORT", 5060))
+    # Port 5070 (corporate-pulse uses 5050) so both can run side by side.
+    # NOTE: NOT 5060 — Chrome/Firefox block 5060 (SIP) with ERR_UNSAFE_PORT.
+    port = int(os.environ.get("PORT", 5070))
     app.run(host="0.0.0.0", port=port, debug=False)
