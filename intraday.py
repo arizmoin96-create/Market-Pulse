@@ -14,10 +14,30 @@ NSE blocks datacenter IPs, so this is LOCAL-only (empty on Render) — same
 constraint as the NSE announcement feed. Educational, NOT investment advice.
 """
 
+import os
 import time
 from datetime import datetime, timedelta, timezone
 
 import requests
+
+
+# ---------------------------------------------------------------------------
+# Data source selection: NSE (free, local-only) or Angel One (free with a
+# SmartAPI account; seconds-fresh OI; works from the cloud).
+# ---------------------------------------------------------------------------
+def _angel_active():
+    """True only if OI_SOURCE=angel AND all Angel creds are present."""
+    if os.environ.get("OI_SOURCE", "").strip().lower() != "angel":
+        return False
+    try:
+        import angel_source
+        return angel_source.available()
+    except Exception:  # noqa: BLE001
+        return False
+
+
+def source_name():
+    return "Angel One" if _angel_active() else "NSE"
 
 UA = (
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
@@ -105,6 +125,14 @@ def _nearest_expiry(symbol):
 
 
 def _fetch_chain(symbol):
+    """Dispatch to the active source; both return the same dict shape."""
+    if _angel_active():
+        import angel_source
+        return angel_source.fetch_chain(symbol)
+    return _fetch_chain_nse(symbol)
+
+
+def _fetch_chain_nse(symbol):
     exp = _nearest_expiry(symbol)
     d = _get(
         f"https://www.nseindia.com/api/option-chain-v3"
@@ -228,6 +256,14 @@ def _max_pain(rows, ce, pe):
 # Breadth (allIndices)
 # ---------------------------------------------------------------------------
 def fetch_breadth():
+    """Dispatch to the active source (same dict shape)."""
+    if _angel_active():
+        import angel_source
+        return angel_source.fetch_breadth()
+    return _fetch_breadth_nse()
+
+
+def _fetch_breadth_nse():
     d = _get(
         "https://www.nseindia.com/api/allIndices",
         "https://www.nseindia.com/market-data/live-market-indices",
@@ -330,7 +366,10 @@ _SNAP_TTL = 4  # seconds — matches the 5s front-end poll behind one cache
 
 def snapshot(force=False):
     now = time.time()
-    if not force and _SNAP_CACHE["data"] and now - _SNAP_CACHE["ts"] < _SNAP_TTL:
+    # Angel's quote API is rate-limited (~1 req/s), so hold the cache a touch
+    # longer than the NSE path to keep a comfortable margin under the limit.
+    ttl = 6 if _angel_active() else _SNAP_TTL
+    if not force and _SNAP_CACHE["data"] and now - _SNAP_CACHE["ts"] < ttl:
         return _SNAP_CACHE["data"]
 
     phase = market_phase()
@@ -355,6 +394,7 @@ def snapshot(force=False):
         "ok": bool(indices),
         "phase": phase,
         "asof": int(now * 1000),
+        "source": source_name(),
         "indices": indices,
         "errors": errs,
     }

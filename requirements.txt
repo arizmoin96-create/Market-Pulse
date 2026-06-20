@@ -3,3 +3,5 @@ requests
 gunicorn
 # Optional: only needed for the AI morning briefing (set ANTHROPIC_API_KEY to use it).
 anthropic
+# Optional: only needed for the Angel One OI source (set OI_SOURCE=angel + creds).
+pyotp

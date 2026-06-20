@@ -46,13 +46,48 @@ export ANTHROPIC_API_KEY=sk-ant-...
 export GLOBAL_AI_MODEL=claude-haiku-4-5   # optional (default)
 ```
 
+## OI data source: NSE (default) vs Angel One
+
+The cockpit reads OI from one of two sources, chosen by the `OI_SOURCE` env var:
+
+| | `nse` (default) | `angel` |
+|---|---|---|
+| OI freshness | ~3 min | ~seconds |
+| Cost | free, no account | free with an Angel One account |
+| Works on cloud (Render)? | ❌ (NSE blocks datacenter IPs) | ✅ (token-auth) |
+
+**To use Angel One** (free, faster OI, cloud-capable):
+
+1. Create a SmartAPI app at <https://smartapi.angelone.in> → get an **API Key**.
+2. Enable TOTP at <https://smartapi.angelone.in/enable-totp> → save the **secret**.
+3. Copy `.env.example` to `.env` and fill in:
+   ```
+   OI_SOURCE=angel
+   ANGEL_API_KEY=...
+   ANGEL_CLIENT_CODE=...      # your Angel login id
+   ANGEL_MPIN=...
+   ANGEL_TOTP_SECRET=...      # the base32 secret from step 2
+   ```
+   `.env` is git-ignored, so credentials never get committed. On Render, set
+   these as Environment variables in the dashboard instead.
+4. `pip install -r requirements.txt` (adds `pyotp`) and restart.
+
+The cockpit header shows which source is live ("via Angel One" / "via NSE").
+
+Notes on the Angel source: SmartAPI has no option-chain endpoint, so the chain
+is assembled from the instrument master + Quote(FULL) API. "Change in OI" is the
+intraday build-up vs the session's first snapshot (FULL gives current OI, not the
+day-change). ATM IV is blank for now (Angel exposes it via a separate
+Option-Greek endpoint, wired later). The daily JWT is auto-refreshed via TOTP.
+
 ## Files
 
 | File                | Purpose                                                  |
 | ------------------- | -------------------------------------------------------- |
 | `app.py`            | Flask server + API routes                                |
 | `global_markets.py` | Global cues, world-news RSS, morning-call engine         |
-| `intraday.py`       | NSE option-chain signals + breadth → intraday scalp bias |
+| `intraday.py`       | Option-chain signals + breadth → intraday scalp bias     |
+| `angel_source.py`   | Optional Angel One SmartAPI OI source (faster, cloud-ok) |
 | `index.html`        | The dashboard UI (two views)                             |
 
 ## Notes

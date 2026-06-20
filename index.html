@@ -401,7 +401,8 @@ function renderCockpit(snap){
   const ph = PHASE[snap.phase] || PHASE["closed"];
   $("ckPhase").className = "phase-pill "+ph[0];
   $("ckPhase").innerHTML = `<span class="pdot"></span>${ph[1]}`;
-  $("ckAsof").textContent = snap.asof ? "updated "+new Date(snap.asof).toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit",second:"2-digit"}) : "";
+  const upd = snap.asof ? "updated "+new Date(snap.asof).toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit",second:"2-digit"}) : "";
+  $("ckAsof").textContent = (snap.source ? "via "+snap.source+" · " : "") + upd;
   $("ckErr").textContent = (snap.errors&&snap.errors.length) ? snap.errors.join(" • ") : "";
   const grid = $("ckGrid");
   if (!snap.indices || !snap.indices.length){ grid.innerHTML='<div class="empty">No option-chain data. On a local network the NSE feed loads in a moment; on a cloud host NSE is blocked.</div>'; return; }

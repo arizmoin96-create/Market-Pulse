@@ -29,6 +29,25 @@ import intraday as iq
 # it is launched from.
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+
+def _load_dotenv():
+    """Load KEY=VALUE pairs from a local .env (git-ignored) into the env, so
+    secrets like the Angel One credentials never live in the code or repo.
+    Existing environment variables win (so Render env vars override .env)."""
+    path = os.path.join(BASE_DIR, ".env")
+    if not os.path.exists(path):
+        return
+    with open(path) as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, val = line.split("=", 1)
+            os.environ.setdefault(key.strip(), val.strip().strip('"').strip("'"))
+
+
+_load_dotenv()
+
 app = Flask(__name__)
 
 
