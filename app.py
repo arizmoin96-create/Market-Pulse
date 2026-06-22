@@ -98,6 +98,19 @@ def api_intraday():
         return jsonify({"ok": False, "error": str(e), "indices": []}), 200
 
 
+@app.route("/api/copilot", methods=["POST"])
+def api_copilot():
+    """AI co-pilot — answer a trader question over the live cockpit state."""
+    try:
+        import copilot
+        q = ((request.get_json(silent=True) or {}).get("q") or "").strip()
+        if not q:
+            return jsonify({"ok": False, "error": "empty question"}), 200
+        return jsonify(copilot.answer(q))
+    except Exception as e:  # noqa: BLE001
+        return jsonify({"ok": False, "error": str(e)}), 200
+
+
 @app.route("/")
 def index():
     return send_from_directory(BASE_DIR, "index.html")

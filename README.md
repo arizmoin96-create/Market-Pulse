@@ -29,6 +29,9 @@ built from the NSE live option chain + breadth:
 - **OI walls** — top call (resistance) and put (support) strikes.
 - **Actionable read** — the levels, who's in control, and the triggers that flip
   the call.
+- **🤖 AI Co-pilot** *(optional)* — a chat box that reads the live OI / PCR /
+  levels / bias + headlines and answers questions ("what's the Nifty setup?").
+  Set `ANTHROPIC_API_KEY` to enable; without it the box shows how to turn it on.
 
 ## Setup & run
 
@@ -88,6 +91,7 @@ Option-Greek endpoint, wired later). The daily JWT is auto-refreshed via TOTP.
 | `global_markets.py` | Global cues, world-news RSS, morning-call engine         |
 | `intraday.py`       | Option-chain signals + breadth → intraday scalp bias     |
 | `angel_source.py`   | Optional Angel One SmartAPI OI source (faster, cloud-ok) |
+| `copilot.py`        | AI Co-pilot — answers questions over the live cockpit    |
 | `index.html`        | The dashboard UI (two views)                             |
 
 ## Notes
