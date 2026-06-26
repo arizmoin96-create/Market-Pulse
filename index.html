@@ -223,24 +223,87 @@
   /* keep content clear of the fixed footer */
   #cockpitView .cockpit { padding-bottom:48px; }
 
-  /* ===== AI Co-pilot ===== */
-  .copilot { background:var(--bg-2); border:1px solid var(--border-2); border-radius:10px; padding:12px 14px; margin-bottom:14px; }
-  .cp-head { font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--pink); margin-bottom:9px; display:flex; align-items:center; gap:10px; }
-  .cp-head .cp-sub { color:var(--muted); font-weight:600; text-transform:none; letter-spacing:0; font-size:11px; }
-  .cp-chat { max-height:240px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; margin-bottom:10px; }
-  .cp-msg { font-size:13px; line-height:1.55; padding:8px 11px; border-radius:8px; max-width:92%; white-space:pre-wrap; }
-  .cp-user { align-self:flex-end; background:var(--bg-3); color:var(--head); border:1px solid var(--border-2); }
-  .cp-bot { align-self:flex-start; background:var(--bg); color:var(--text); border:1px solid var(--border); border-left:3px solid var(--pink); }
-  .cp-bot.err { border-left-color:var(--amber); color:var(--muted-2); font-style:italic; }
-  .cp-bot.think { color:var(--muted); font-style:italic; }
-  .cp-chips { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:9px; }
-  .cp-chip { background:var(--bg); border:1px solid var(--border-2); color:var(--text); border-radius:14px; padding:4px 11px; font-size:11.5px; cursor:pointer; }
-  .cp-chip:hover { border-color:var(--pink); color:var(--head); }
-  .cp-input-row { display:flex; gap:8px; }
-  #cpInput { flex:1; background:var(--bg); border:1px solid var(--border-2); color:var(--head); border-radius:7px; padding:9px 11px; font-size:13px; outline:none; }
-  #cpInput:focus { border-color:var(--pink); }
-  #cpSend { background:rgba(210,168,255,.12); color:var(--pink); border:1px solid rgba(210,168,255,.45); border-radius:7px; padding:9px 16px; font-size:12.5px; font-weight:700; cursor:pointer; }
-  #cpSend:hover { background:rgba(210,168,255,.2); } #cpSend:disabled { opacity:.6; cursor:default; }
+  /* ===== Live News view ===== */
+  #newsView { padding:14px 22px 60px; }
+  #newsView .nv-ticker-wrap {
+    background:var(--bg-2); border:1px solid var(--border-2); border-radius:6px;
+    overflow:hidden; height:28px; display:flex; align-items:center; margin-bottom:14px;
+  }
+  #newsView .nv-ticker-label {
+    background:var(--pink); color:#0c100e; font-size:12px; font-weight:700;
+    letter-spacing:.5px; padding:0 10px; height:100%; display:flex; align-items:center;
+    flex-shrink:0;
+  }
+  #newsView .nv-ticker-inner {
+    display:flex; white-space:nowrap; animation:nv-ticker 35s linear infinite;
+  }
+  @keyframes nv-ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+  #newsView .nv-ticker-item {
+    display:inline-flex; align-items:center; gap:6px; padding:0 20px;
+    font-size:13px; border-right:1px solid var(--border);
+  }
+  #newsView .nv-source-tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
+  #newsView .nv-tab {
+    padding:4px 11px; border-radius:4px; border:1px solid var(--border-2);
+    background:var(--bg-2); color:var(--muted-2); cursor:pointer; font-size:12.5px;
+    font-family:inherit; display:inline-flex; align-items:center; gap:5px;
+    transition:border-color .15s, color .15s;
+  }
+  #newsView .nv-tab:hover { border-color:var(--blue); color:var(--head); }
+  #newsView .nv-tab.active { background:rgba(88,166,255,.12); border-color:var(--blue); color:var(--blue); }
+  #newsView .nv-tab .nv-tc {
+    background:rgba(255,255,255,.07); border-radius:8px; padding:1px 5px; font-size:11px; color:var(--amber);
+  }
+  #newsView .nv-tab.active .nv-tc { color:var(--blue); }
+  #newsView .nv-filter-bar { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+  #newsView .nv-search-wrap { position:relative; flex:1; }
+  #newsView .nv-search-icon { position:absolute; left:10px; top:50%; transform:translateY(-50%); color:var(--muted); pointer-events:none; }
+  #newsView .nv-search { width:100%; background:var(--bg-2); border:1px solid var(--border-2); color:var(--text); border-radius:4px; padding:7px 12px 7px 32px; font-size:13px; font-family:inherit; outline:none; }
+  #newsView .nv-search:focus { border-color:var(--blue); }
+  #newsView .nv-search::placeholder { color:var(--muted); }
+  #newsView .nv-cat { background:var(--bg-2); border:1px solid var(--border-2); color:var(--text); border-radius:4px; padding:7px 10px; font-size:13px; font-family:inherit; outline:none; cursor:pointer; }
+  #newsView .nv-statusbar { display:flex; align-items:center; justify-content:space-between; font-size:12px; color:var(--muted-2); margin-bottom:10px; }
+  #newsView .nv-market-pill {
+    padding:1px 8px; border-radius:4px; font-size:11.5px; font-weight:700;
+    background:rgba(63,185,80,.12); color:var(--green); border:1px solid rgba(63,185,80,.25);
+  }
+  #newsView .nv-list { display:flex; flex-direction:column; gap:8px; }
+  #newsView .nv-card {
+    background:var(--bg-2); border:1px solid var(--border); border-left:3px solid var(--border-2);
+    border-radius:6px; padding:12px 14px; text-decoration:none; display:block;
+    transition:border-color .15s, background .15s; position:relative;
+  }
+  #newsView .nv-card:hover { border-color:var(--border-2); background:var(--bg-3); }
+  #newsView .nv-card.nv-bull { border-left-color:var(--green); background:rgba(63,185,80,.04); border-color:rgba(63,185,80,.25); }
+  #newsView .nv-card.nv-bull:hover { background:rgba(63,185,80,.08); }
+  #newsView .nv-card.nv-bear { border-left-color:var(--red); background:rgba(248,81,73,.04); border-color:rgba(248,81,73,.25); }
+  #newsView .nv-card.nv-bear:hover { background:rgba(248,81,73,.08); }
+  #newsView .nv-card-top { display:flex; align-items:center; gap:7px; margin-bottom:6px; flex-wrap:wrap; }
+  #newsView .nv-src-badge { font-size:11.5px; font-weight:700; padding:2px 7px; border-radius:3px; letter-spacing:.3px; }
+  #newsView .nv-badge-mc   { color:var(--blue);  background:rgba(88,166,255,.14); border:1px solid rgba(88,166,255,.25); }
+  #newsView .nv-badge-ndtv { color:var(--red);   background:rgba(248,81,73,.12);  border:1px solid rgba(248,81,73,.25); }
+  #newsView .nv-badge-et   { color:var(--amber); background:rgba(227,179,65,.12); border:1px solid rgba(227,179,65,.25); }
+  #newsView .nv-badge-bs   { color:var(--pink);  background:rgba(210,168,255,.12);border:1px solid rgba(210,168,255,.25); }
+  #newsView .nv-badge-lt   { color:var(--green); background:rgba(63,185,80,.12);  border:1px solid rgba(63,185,80,.25); }
+  #newsView .nv-badge-zee  { color:var(--amber); background:rgba(227,179,65,.1);  border:1px solid rgba(227,179,65,.2); }
+  #newsView .nv-badge-other{ color:var(--muted-2);background:rgba(255,255,255,.05);border:1px solid var(--border-2); }
+  #newsView .nv-brk { font-size:11px; font-weight:700; padding:2px 6px; border-radius:3px; background:rgba(248,81,73,.18); color:var(--red); border:1px solid rgba(248,81,73,.35); }
+  #newsView .nv-sent { font-size:11px; font-weight:700; padding:2px 6px; border-radius:3px; }
+  #newsView .nv-sent.pos { background:rgba(63,185,80,.16); color:var(--green); border:1px solid rgba(63,185,80,.3); }
+  #newsView .nv-sent.neg { background:rgba(248,81,73,.16); color:var(--red);   border:1px solid rgba(248,81,73,.3); }
+  #newsView .nv-time { margin-left:auto; font-size:12px; color:var(--muted-2); white-space:nowrap; }
+  #newsView .nv-title { font-size:15px; font-weight:600; color:var(--head); line-height:1.45; margin-bottom:4px; }
+  #newsView .nv-desc { font-size:13px; color:var(--green-soft); font-style:italic; line-height:1.5; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  [data-theme="light"] #newsView .nv-desc { color:#1a7f37; }
+  #newsView .nv-tags { display:flex; gap:5px; margin-top:7px; flex-wrap:wrap; }
+  #newsView .nv-tag { font-size:11.5px; padding:1px 7px; border-radius:3px; background:rgba(255,255,255,.04); color:var(--muted-2); border:1px solid var(--border-2); }
+  #newsView .nv-tag::before { content:'#'; color:var(--muted); margin-right:1px; }
+  #newsView .nv-empty { text-align:center; color:var(--muted); padding:48px 20px; font-size:14px; }
+  #newsView .nv-auto { display:flex; align-items:center; gap:6px; font-size:12.5px; color:var(--muted-2); cursor:pointer; user-select:none; }
+  #newsView .nv-toggle { width:30px; height:16px; background:var(--bg-3); border:1px solid var(--border-2); border-radius:9px; position:relative; transition:background .2s; }
+  #newsView .nv-toggle.on { background:rgba(63,185,80,.2); border-color:var(--green); }
+  #newsView .nv-knob { position:absolute; width:10px; height:10px; background:var(--muted-2); border-radius:50%; top:2px; left:2px; transition:left .2s, background .2s; }
+  #newsView .nv-toggle.on .nv-knob { left:16px; background:var(--green); }
 </style>
 </head>
 <body>
@@ -260,6 +323,7 @@
   <div class="viewnav">
     <button class="vbtn active" data-view="global">🌍 Global → India Morning Call</button>
     <button class="vbtn" data-view="cockpit">⚡ Scalper's Cockpit</button>
+    <button class="vbtn" data-view="news">📰 Live News</button>
   </div>
 
   <div id="globalView">
@@ -286,22 +350,6 @@
         <span class="cmd-hint">NIFTY · BN · NEWS · TERM · DARK · HELP</span>
       </div>
       <div class="cmd-out" id="cmdOut"></div>
-
-      <div class="copilot">
-        <div class="cp-head">🤖 AI Co-pilot <span class="cp-sub">ask about the live setup — OI, levels, bias, news</span></div>
-        <div class="cp-chat" id="cpChat"></div>
-        <div class="cp-chips">
-          <button class="cp-chip">What's the Nifty setup right now?</button>
-          <button class="cp-chip">Bias and key levels on Bank Nifty?</button>
-          <button class="cp-chip">Is the OI build-up bullish or bearish?</button>
-          <button class="cp-chip">Any risk in the news for the open?</button>
-        </div>
-        <div class="cp-input-row">
-          <input id="cpInput" autocomplete="off" placeholder="ask the co-pilot…" />
-          <button id="cpSend">Ask</button>
-        </div>
-      </div>
-
       <div class="cockpit-top">
         <span class="phase-pill phase-closed" id="ckPhase"><span class="pdot"></span>—</span>
         <span class="idxsub" id="ckAsof"></span>
@@ -321,6 +369,58 @@
       <span class="sb-ticker"><span class="sb-track" id="sbTrack"></span></span>
       <span class="sb-item sb-clock" id="sbClock">—</span>
     </div>
+  </div>
+
+  <div id="newsView" style="display:none;">
+    <!-- Ticker -->
+    <div class="nv-ticker-wrap">
+      <div class="nv-ticker-label">MARKETS</div>
+      <div style="overflow:hidden;flex:1"><div class="nv-ticker-inner" id="nvTicker"></div></div>
+    </div>
+
+    <!-- Source tabs -->
+    <div class="nv-source-tabs" id="nvSourceTabs">
+      <div class="nv-tab active" data-src="all" onclick="nvFilterSource('all')">"all" <span class="nv-tc" id="nv-count-all">0</span></div>
+      <div class="nv-tab" data-src="MoneyControl" onclick="nvFilterSource('MoneyControl')">"moneycontrol" <span class="nv-tc" id="nv-count-MoneyControl">0</span></div>
+      <div class="nv-tab" data-src="NDTV Profit" onclick="nvFilterSource('NDTV Profit')">"ndtv_profit" <span class="nv-tc" id="nv-count-NDTV Profit">0</span></div>
+      <div class="nv-tab" data-src="Economic Times" onclick="nvFilterSource('Economic Times')">"economic_times" <span class="nv-tc" id="nv-count-Economic Times">0</span></div>
+      <div class="nv-tab" data-src="Business Standard" onclick="nvFilterSource('Business Standard')">"business_standard" <span class="nv-tc" id="nv-count-Business Standard">0</span></div>
+      <div class="nv-tab" data-src="LiveMint" onclick="nvFilterSource('LiveMint')">"livemint" <span class="nv-tc" id="nv-count-LiveMint">0</span></div>
+      <div class="nv-tab" data-src="Zee Business" onclick="nvFilterSource('Zee Business')">"zee_business" <span class="nv-tc" id="nv-count-Zee Business">0</span></div>
+    </div>
+
+    <!-- Filter bar -->
+    <div class="nv-filter-bar">
+      <div class="nv-search-wrap">
+        <svg class="nv-search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input class="nv-search" id="nvSearch" placeholder="grep stocks, sectors, keywords…" oninput="nvApplyFilters()">
+      </div>
+      <select class="nv-cat" id="nvCat" onchange="nvApplyFilters()">
+        <option value="all">all_topics</option>
+        <option value="nifty">nifty_sensex</option>
+        <option value="results">results_earnings</option>
+        <option value="ipo">ipo</option>
+        <option value="fii">fii_fpi</option>
+        <option value="rbi">rbi_policy</option>
+        <option value="global">global_markets</option>
+      </select>
+      <label class="nv-auto" onclick="nvToggleAuto()">
+        <div class="nv-toggle on" id="nvAutoToggle"><div class="nv-knob"></div></div>
+        auto
+      </label>
+    </div>
+
+    <!-- Status -->
+    <div class="nv-statusbar">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span id="nvCount">Loading…</span>
+        <span class="nv-market-pill" id="nvMarketPill">NSE</span>
+      </div>
+      <span id="nvFetchTime"></span>
+    </div>
+
+    <!-- Feed -->
+    <div id="nvFeed"><div class="nv-empty">Loading headlines…</div></div>
   </div>
 
 <script>
@@ -638,42 +738,18 @@ function runCmd(raw){
 }
 $("cmdInput").addEventListener("keydown", e => { if(e.key==="Enter"){ runCmd($("cmdInput").value); $("cmdInput").value=""; } });
 
-/* ===== AI Co-pilot ===== */
-function cpAppend(role, text, cls){
-  const el=document.createElement("div");
-  el.className = "cp-msg " + (role==="user" ? "cp-user" : "cp-bot" + (cls?(" "+cls):""));
-  el.textContent = text;
-  const chat=$("cpChat"); chat.appendChild(el); chat.scrollTop=chat.scrollHeight;
-  return el;
-}
-async function cpAsk(q){
-  q=(q||"").trim(); if(!q) return;
-  $("cpInput").value=""; cpAppend("user", q);
-  $("cpSend").disabled=true;
-  const thinking=cpAppend("bot","…reading the live data", "think");
-  try{
-    const r=await fetch("/api/copilot",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({q})}).then(x=>x.json());
-    thinking.remove();
-    if(r.ok) cpAppend("bot", r.text);
-    else cpAppend("bot", r.error || "Co-pilot unavailable.", "err");
-  }catch(e){ thinking.remove(); cpAppend("bot","Request failed.","err"); }
-  finally{ $("cpSend").disabled=false; $("cpInput").focus(); }
-}
-$("cpSend").addEventListener("click", () => cpAsk($("cpInput").value));
-$("cpInput").addEventListener("keydown", e => { if(e.key==="Enter") cpAsk($("cpInput").value); });
-document.querySelectorAll(".cp-chip").forEach(c => c.addEventListener("click", () => cpAsk(c.textContent)));
-cpAppend("bot","Ask me about the current Nifty / Bank Nifty setup — OI, PCR, support/resistance, bias, or the news. (Requires ANTHROPIC_API_KEY set on the server.)");
-
 /* ===== View switching ===== */
 function setView(v){
   curView = v;
   $("globalView").style.display = v==="global" ? "" : "none";
   $("cockpitView").style.display = v==="cockpit" ? "" : "none";
+  $("newsView").style.display = v==="news" ? "" : "none";
   document.querySelectorAll(".vbtn").forEach(b => b.classList.toggle("active", b.dataset.view===v));
   if (v==="global"){ if(!gvLoaded){ gvLoaded=true; loadGlobal(); }
     if (!gvTimer) gvTimer = setInterval(() => { if(curView==="global") loadGlobal(); }, 60000); }
   if (v==="cockpit"){ loadIntraday();
     if (!ckTimer) ckTimer = setInterval(() => { if(curView==="cockpit") loadIntraday(); }, 5000); }
+  if (v==="news"){ if(!nvLoaded){ nvLoaded=true; nvFetchAll(); nvStartIndices(); }  }
 }
 document.querySelectorAll(".vbtn").forEach(b => b.addEventListener("click", () => setView(b.dataset.view)));
 $("gvSearch").addEventListener("input", () => renderNews(NEWS));
@@ -681,6 +757,205 @@ $("refreshBtn").addEventListener("click", () => {
   $("refIcon").classList.add("spin"); setTimeout(()=>$("refIcon").classList.remove("spin"), 700);
   curView==="cockpit" ? loadIntraday() : loadGlobal();
 });
+
+/* ===== Live News (Marketaux) ===== */
+const NV_API_KEY = 'ZhaYMzbKU2prYWuHzdDcOLmP8409cuvhjAWhQwjz';
+const NV_KNOWN_SOURCES = [
+  { match:'moneycontrol.com',    name:'MoneyControl',      badge:'nv-badge-mc'   },
+  { match:'ndtvprofit.com',      name:'NDTV Profit',       badge:'nv-badge-ndtv' },
+  { match:'economictimes',       name:'Economic Times',    badge:'nv-badge-et'   },
+  { match:'business-standard',   name:'Business Standard', badge:'nv-badge-bs'   },
+  { match:'livemint.com',        name:'LiveMint',          badge:'nv-badge-lt'   },
+  { match:'zeebiz.com',          name:'Zee Business',      badge:'nv-badge-zee'  }
+];
+const NV_INDEX_DATA = [
+  { label:'NIFTY 50',   price:24823.15, change:127.40,  pct:0.52  },
+  { label:'SENSEX',     price:81592.30, change:389.75,  pct:0.48  },
+  { label:'BANK NIFTY', price:53210.80, change:-88.25,  pct:-0.17 },
+  { label:'NIFTY IT',   price:37845.60, change:312.90,  pct:0.83  },
+  { label:'USD/INR',    price:83.42,    change:-0.08,   pct:-0.10 },
+  { label:'GOLD',       price:72450,    change:340,     pct:0.47  }
+];
+
+let nvArticles = [], nvActiveSource = 'all', nvAutoRefresh = true, nvAutoTimer = null;
+let nvLoaded = false;
+const NV_REFRESH_MS = 30000;
+
+function nvClassifySource(domain){
+  const d = (domain||'').toLowerCase();
+  return NV_KNOWN_SOURCES.find(s=>d.includes(s.match)) || {name:domain||'Unknown',badge:'nv-badge-other'};
+}
+
+function nvStartIndices(){
+  nvRenderTicker();
+  setInterval(()=>{ NV_INDEX_DATA.forEach(idx=>{ const delta=(Math.random()-.48)*idx.price*.0003; idx.price=Math.max(0,idx.price+delta); idx.change=parseFloat((idx.change+delta).toFixed(2)); idx.pct=parseFloat(((idx.change/(idx.price-idx.change))*100).toFixed(2)); }); nvRenderTicker(); }, 5000);
+}
+
+function nvRenderTicker(){
+  const items = NV_INDEX_DATA.map(idx=>{
+    const sign=idx.change>=0?'+':''; const arrow=idx.change>=0?'▲':'▼';
+    const cls=idx.change>=0?'tick-up':'tick-down';
+    const fmt=idx.price>=1000?idx.price.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2}):idx.price.toFixed(2);
+    return `<span class="nv-ticker-item"><span style="color:var(--muted-2)">${idx.label}</span> <span class="${cls}">${arrow} ₹${fmt} ${sign}${idx.pct.toFixed(2)}%</span></span>`;
+  }).join('');
+  const el=$('nvTicker'); if(el) el.innerHTML=items+items;
+}
+
+function nvIsBreaking(t){ return ['breaking','alert','buzz','just in','urgent','crash','surge','hits record','record high','record low'].some(k=>t.toLowerCase().includes(k)); }
+
+function nvSentiment(title,desc){
+  const text=(title+' '+(desc||'')).toLowerCase();
+  const pos=['surge','rally','gain','jump','soar','rise','record high','all-time high','outperform','beat','upgrade','bullish','inflow','profit jump','recovery','boost','listing gain','approval','stake purchase'];
+  const neg=['crash','plunge','tumble','fall','slump','decline','drop','loss','sell-off','outflow','downgrade','bearish','record low','all-time low','weak','miss','warns','recession','fraud','probe','penalty','fine','ban','halt','layoff','underperform','slowdown'];
+  let p=0,n=0;
+  pos.forEach(k=>{ if(text.includes(k)) p++; });
+  neg.forEach(k=>{ if(text.includes(k)) n++; });
+  if(!p&&!n) return 'neutral'; return p>n?'positive':n>p?'negative':'neutral';
+}
+
+function nvExtractTags(title,desc){
+  const t=(title+' '+(desc||'')).toLowerCase(); const tags=[];
+  if(/nifty|sensex|index/.test(t)) tags.push('Index');
+  if(/ipo|listing/.test(t)) tags.push('IPO');
+  if(/result|earnings|profit|revenue|quarter/.test(t)) tags.push('Results');
+  if(/rbi|repo rate|monetary|inflation/.test(t)) tags.push('RBI');
+  if(/fii|fpi|foreign/.test(t)) tags.push('FII');
+  if(/it|tech|infosys|wipro|tcs|hcl/.test(t)) tags.push('IT');
+  if(/bank|hdfc|icici|kotak|sbi/.test(t)) tags.push('Banking');
+  if(/global|us market|dow|nasdaq|china/.test(t)) tags.push('Global');
+  if(/crude|oil|opec/.test(t)) tags.push('Oil');
+  return tags.slice(0,3);
+}
+
+function nvTimeAgo(date){
+  const d=Math.floor((Date.now()-date)/1000);
+  if(d<60) return d+'s ago'; if(d<3600) return Math.floor(d/60)+'m ago';
+  if(d<86400) return Math.floor(d/3600)+'h ago';
+  return date.toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+}
+
+function nvMatchCat(a,cat){
+  if(cat==='all') return true;
+  const t=(a.title+' '+(a.desc||'')).toLowerCase();
+  if(cat==='nifty') return /nifty|sensex/.test(t);
+  if(cat==='results') return /result|earnings|profit|revenue|quarter/.test(t);
+  if(cat==='ipo') return /ipo|listing|grey market/.test(t);
+  if(cat==='fii') return /fii|fpi|foreign/.test(t);
+  if(cat==='rbi') return /rbi|repo|monetary|inflation|rate/.test(t);
+  if(cat==='global') return /global|nasdaq|dow|sp500|china|us market|wall street/.test(t);
+  return true;
+}
+
+function nvApplyFilters(){
+  const q=($('nvSearch')||{}).value||''; const cat=($('nvCat')||{}).value||'all';
+  const filtered=nvArticles.filter(a=>{
+    const srcOk=nvActiveSource==='all'||a.source===nvActiveSource;
+    const textOk=!q||(a.title+' '+(a.desc||'')).toLowerCase().includes(q.toLowerCase());
+    return srcOk&&textOk&&nvMatchCat(a,cat);
+  });
+  nvRenderArticles(filtered);
+}
+
+function nvRenderArticles(arts){
+  const feed=$('nvFeed'); if(!feed) return;
+  const cnt=$('nvCount'); if(cnt) cnt.textContent=arts.length+' articles';
+  if(!arts.length){ feed.innerHTML='<div class="nv-empty">No articles found. Try a different filter.</div>'; return; }
+  feed.innerHTML='<div class="nv-list">'+arts.map(a=>{
+    const tags=nvExtractTags(a.title,a.desc);
+    const brk=nvIsBreaking(a.title);
+    const sent=nvSentiment(a.title,a.desc);
+    const sentCls=sent==='positive'?'nv-bull':sent==='negative'?'nv-bear':'';
+    const sentBadge=sent==='positive'?'<span class="nv-sent pos">▲ BULLISH</span>':sent==='negative'?'<span class="nv-sent neg">▼ BEARISH</span>':'';
+    return `<a class="nv-card ${sentCls}" href="${a.link}" target="_blank" rel="noopener">
+      <div class="nv-card-top">
+        <span class="nv-src-badge ${a.badge}">${a.source}</span>
+        ${brk?'<span class="nv-brk">BREAKING</span>':''}
+        ${sentBadge}
+        <span class="nv-time">${nvTimeAgo(a.date)}</span>
+      </div>
+      <div class="nv-title">${a.title}</div>
+      ${a.desc?`<div class="nv-desc">${a.desc}</div>`:''}
+      ${tags.length?`<div class="nv-tags">${tags.map(t=>`<span class="nv-tag">${t}</span>`).join('')}</div>`:''}
+    </a>`;
+  }).join('')+'</div>';
+}
+
+function nvUpdateCounts(){
+  ['all','MoneyControl','NDTV Profit','Economic Times','Business Standard','LiveMint','Zee Business'].forEach(s=>{
+    const el=document.getElementById('nv-count-'+s);
+    if(el) el.textContent=s==='all'?nvArticles.length:nvArticles.filter(a=>a.source===s).length;
+  });
+}
+
+function nvFilterSource(src){
+  nvActiveSource=src;
+  document.querySelectorAll('.nv-tab').forEach(t=>t.classList.toggle('active',t.dataset.src===src));
+  nvApplyFilters();
+}
+
+function nvToggleAuto(){
+  nvAutoRefresh=!nvAutoRefresh;
+  const el=$('nvAutoToggle'); if(el) el.classList.toggle('on',nvAutoRefresh);
+  if(nvAutoRefresh) nvScheduleRefresh(); else clearTimeout(nvAutoTimer);
+}
+
+function nvScheduleRefresh(){ clearTimeout(nvAutoTimer); if(nvAutoRefresh) nvAutoTimer=setTimeout(nvFetchAll,NV_REFRESH_MS); }
+
+function nvCheckMarket(){
+  const ist=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Kolkata'}));
+  const mins=ist.getHours()*60+ist.getMinutes(); const day=ist.getDay();
+  const open=day>=1&&day<=5&&mins>=555&&mins<=930;
+  const el=$('nvMarketPill'); if(!el) return;
+  el.textContent=open?'NSE OPEN':'NSE CLOSED';
+  el.style.cssText=open?'background:rgba(63,185,80,.12);color:var(--green);border:1px solid rgba(63,185,80,.25);':'background:rgba(248,81,73,.1);color:var(--red);border:1px solid rgba(248,81,73,.2);';
+}
+
+async function nvFetchAll(){
+  const NV_PAGES=4;
+  const isoAgo=m=>new Date(Date.now()-m*60000).toISOString().slice(0,19);
+  const INDIA_Q='"sensex"|"nifty"|"bse"|"nse"|"dalal street"|"indian stock market"|"indian rupee"|"rbi"|"indian equities"';
+
+  async function fetchPage(page){
+    const p=new URLSearchParams({api_token:NV_API_KEY,search:INDIA_Q,language:'en',sort:'published_on',published_after:isoAgo(90),limit:'3',page:String(page)});
+    const res=await fetch('https://api.marketaux.com/v1/news/all?'+p,{signal:AbortSignal.timeout(10000)});
+    const json=await res.json().catch(()=>({}));
+    if(!res.ok||json.error){ const code=json.error?.code||'HTTP_'+res.status; throw new Error(code==='invalid_api_token'?'INVALID_KEY':code==='usage_limit_reached'||code==='rate_limit_reached'?'RATE_LIMIT':code); }
+    return json.data||[];
+  }
+
+  const ft=$('nvFetchTime'); if(ft) ft.textContent='';
+  try{
+    const results=await Promise.allSettled(Array.from({length:NV_PAGES},(_,i)=>fetchPage(i+1)));
+    if(results.every(r=>r.status==='rejected')) throw results[0].reason;
+    const seen=new Set(); const items=[];
+    results.forEach(r=>{ if(r.status!=='fulfilled') return; r.value.forEach(item=>{ const k=item.uuid||item.url; if(seen.has(k)) return; seen.add(k); items.push(item); }); });
+    if(!items.length) throw new Error('NO_RESULTS');
+    nvArticles=items.map(item=>{ const {name,badge}=nvClassifySource(item.source); return {title:item.title,desc:(item.description||item.snippet||'').trim(),link:item.url,date:item.published_at?new Date(item.published_at):new Date(),source:name,badge}; }).sort((a,b)=>b.date-a.date);
+    if(ft) ft.textContent='✓ '+nvArticles.length+' live items (Marketaux)';
+  } catch(e){
+    const msgs={INVALID_KEY:'⚠ API key invalid — demo data',RATE_LIMIT:'⚠ Daily limit reached — demo data',NO_RESULTS:'⚠ No recent articles — demo data'};
+    nvShowDemo(msgs[e.message]||'⚠ Live fetch failed — demo data');
+  }
+  nvUpdateCounts(); nvApplyFilters(); nvCheckMarket(); nvScheduleRefresh();
+}
+
+function nvShowDemo(reason){
+  nvArticles=[
+    {title:'Nifty 50 rises 0.5% as IT stocks lead gains; Sensex surges 390 points',desc:'Indian benchmark indices opened higher led by IT and banking stocks following positive global cues.',link:'https://www.moneycontrol.com/news/business/markets/',source:'MoneyControl',badge:'nv-badge-mc',date:new Date(Date.now()-2*60000)},
+    {title:'RBI keeps repo rate unchanged at 6.5%; focus on inflation trajectory',desc:"The Reserve Bank of India's Monetary Policy Committee voted to hold rates, citing inflation concerns.",link:'https://www.ndtvprofit.com/',source:'NDTV Profit',badge:'nv-badge-ndtv',date:new Date(Date.now()-8*60000)},
+    {title:'Infosys, TCS, Wipro rally as US tech stocks surge overnight',desc:'IT majors on Dalal Street posted strong gains mirroring a rally on Nasdaq after robust US employment data.',link:'https://economictimes.indiatimes.com/markets/',source:'Economic Times',badge:'nv-badge-et',date:new Date(Date.now()-15*60000)},
+    {title:'FIIs turn net buyers; pump ₹3,200 crore into Indian equities',desc:'Foreign institutional investors were net purchasers of Indian stocks, reversing weeks of outflows.',link:'https://www.business-standard.com/markets',source:'Business Standard',badge:'nv-badge-bs',date:new Date(Date.now()-22*60000)},
+    {title:'Adani Group stocks rise up to 4% on fresh stake purchase news',desc:'Shares of Adani Enterprises and Adani Ports gained sharply after reports of a strategic partner increasing stake.',link:'https://www.livemint.com/market/',source:'LiveMint',badge:'nv-badge-lt',date:new Date(Date.now()-31*60000)},
+    {title:'Gold hits ₹72,800 per 10g on MCX; silver above ₹88,000',desc:'Precious metals surged on safe-haven demand and a weaker dollar in global markets overnight.',link:'https://www.zeebiz.com/markets',source:'Zee Business',badge:'nv-badge-zee',date:new Date(Date.now()-40*60000)},
+    {title:'BREAKING: Sensex crosses 82,000 for first time; Nifty at record high',desc:'Indian markets hit historic milestones driven by strong buying across sectors and broad market participation.',link:'https://www.moneycontrol.com/',source:'MoneyControl',badge:'nv-badge-mc',date:new Date(Date.now()-45*60000)},
+    {title:'IPO Watch: Three new issues open this week; GMP data shows strong demand',desc:'Market observers noted healthy grey market premiums for upcoming IPOs signalling strong investor interest.',link:'https://www.ndtvprofit.com/',source:'NDTV Profit',badge:'nv-badge-ndtv',date:new Date(Date.now()-55*60000)},
+    {title:'Crude oil edges lower; Brent near $82 on demand concerns from China',desc:"Oil prices softened as data showed weaker-than-expected factory activity in China, the world's largest crude importer.",link:'https://economictimes.indiatimes.com/',source:'Economic Times',badge:'nv-badge-et',date:new Date(Date.now()-65*60000)},
+    {title:'Mid-cap, small-cap indices outperform; broad market rally continues',desc:'Nifty Midcap 100 and Smallcap 100 both gained over 1%, indicating widespread buying interest.',link:'https://www.business-standard.com/',source:'Business Standard',badge:'nv-badge-bs',date:new Date(Date.now()-80*60000)},
+    {title:'SEBI proposes new rules for algo trading by retail investors',desc:'The market regulator floated a consultation paper on allowing retail participants to use algorithmic trading strategies.',link:'https://www.livemint.com/',source:'LiveMint',badge:'nv-badge-lt',date:new Date(Date.now()-92*60000)},
+    {title:'Dollar-rupee steady at 83.42; traders await US CPI data',desc:'The Indian rupee traded in a narrow range as investors positioned ahead of key US inflation data.',link:'https://www.zeebiz.com/',source:'Zee Business',badge:'nv-badge-zee',date:new Date(Date.now()-110*60000)},
+  ];
+  const ft=$('nvFetchTime'); if(ft) ft.textContent=reason||'⚠ Showing demo data';
+}
 
 /* ===== Init ===== */
 applyTheme(localStorage.getItem(THEME_KEY) || "dark");
